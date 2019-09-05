@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuc.mapper.AdminMapper">
+<!--管理员登陆-->
+    <select id="selByAdmin" parameterType="Admin" resultMap="adminSelect">
+        select * from admin where adminname=#{adminName} and adminpwd=#{adminPwd}
+    </select>
+
+    <resultMap id="adminSelect" type="Admin">
+        <id property="adminId" column="adminid"/>
+        <result property="adminName" column="adminname"/>
+        <result property="adminPwd" column="adminpwd"/>
+    </resultMap>
+<!--根据ID获取管理员信息-->
+    <select id="selAdminById" parameterType="Admin" resultMap="adminSelect">
+        select * from admin where adminid=#{adminId}
+    </select>
+
+    <!--修改管理员个人信息-->
+    <update id="updAdmin" parameterType="Admin">
+        update admin set  adminname=#{adminName},adminpwd=#{adminPwd} where adminid=#{adminId}
+    </update>
+
+    <!--查询所有用户信息-->
+    <select id="selAllUsers" parameterType="User" resultType="User">
+        select * from user
+    </select>
+    <!-- 查询总用户数量 -->
+    <select id="selCountOfUsers" resultType="java.lang.Integer">
+        select count(*) from user
+    </select>
+
+    <select id="selByUserName" parameterType="java.lang.String" resultType="user">
+        select * from user where username like concat('%', #{username}, '%')
+    </select>
+
+    <!--删除一个用户-->
+    <delete id="delUser" parameterType="User">
+        delete from user where id=#{id}
+    </delete>
+<!--    添加用户-->
+    <insert id="insUser" parameterType="User">
+        insert into user (username,password,email,address,phone)
+        values (#{username}, #{password}, #{email}, #{address}, #{phone})
+    </insert>
+
+<!--    <select id="testPwd" parameterType="Admin">-->
+<!--        select * from where adminname=#{adminName}-->
+<!--    </select>-->
+
+
+<!--    <resultMap id="userSelect" type="User">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="username" column="username"/>-->
+<!--        <result property="password" column="password"/>-->
+<!--        <result property="email" column="email"/>-->
+<!--        <result property="address" column="address"/>-->
+<!--        <result property="phone" column="phone"/>-->
+<!--        <result property="money" column="money"/>-->
+<!--        <result property="img" column="img"/>-->
+<!--    </resultMap>-->
+
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuc.mapper.UserMapper">
+<!--    根据用户名密码登录-->
+    <select id="selByUser" parameterType="user" resultType="user">
+        SELECT * FROM user WHERE username = #{username} AND password = #{password}
+    </select>
+<!--    注册（添加用户信息）-->
+    <insert id="insUser" parameterType="user">
+        insert into user (username,password,email,address,phone)
+            values (#{username}, #{password}, #{email}, #{address}, #{phone} )
+    </insert>
+<!--    根据id查询用户信息-->
+    <select id="selUserById" parameterType="user" resultType="user">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+<!--    根据id修改用户信息-->
+    <update id="updUser"  parameterType="user" >
+        UPDATE user SET  password=#{password}, email=#{email}, address=#{address}, phone=#{phone}
+        WHERE (id=#{id})
+    </update>
+<!--    根据用户id修改用户余额-->
+    <update id="updMoneyById" parameterType="user">
+        UPDATE user SET money=#{money} WHERE id=#{id}
+    </update>
+<!--    判断用户名是否存在-->
+    <select id="selByUserName" parameterType="user" resultType="user">
+        SELECT * FROM user WHERE username=#{username}
+    </select>
+</mapper>

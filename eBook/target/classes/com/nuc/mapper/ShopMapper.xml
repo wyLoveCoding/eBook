@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuc.mapper.ShopMapper">
+<!--     查询所有购物信息-->
+    <select id="selAllShop" resultMap="shopResultMap" >
+        select * from shop
+    </select>
+    <resultMap id="shopResultMap" type="shop">
+        <id property="shopId" column="shopid" />
+        <result property="bookId" column="bookid"  />
+        <result property="userId" column="userid" />
+        <result property="num" column="num" />
+    </resultMap>
+<!--    用户添加商品到购物车-->
+    <select id="insShop" parameterType="shop" resultMap="shopResultMap">
+        select * from shop where bookid = #{bookId} and userid=#{userId}
+    </select>
+<!--    用户修改购物车商品-->
+    <update id="updSHop" parameterType="shop">
+        update shop set num=#{num} where shopid=#{shopId}
+    </update>
+<!--   用户删除购物车商品 -->
+    <delete id="delShop" parameterType="shop">
+        delete  from shop where shopid = #{shopId}
+    </delete>
+    <!-- 用户结算购物车-->
+    <select id="sumMoney" parameterType="shop" >
+        select CAST(sum(num*b.bookmoney)  AS decimal(18,2))
+            as money,s.num,s.bookid,s.userid
+        from shop s,book b
+        where userid = #{userId}
+          and b.bookid = s.bookid
+          and s.bookid=#{bookId}
+    </select>
+</mapper>

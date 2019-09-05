@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuc.mapper.OrderMapper">
+
+    <!--查询当前订单   金额 修改订单1  取消订单1-->
+    <select id="orderMoney" parameterType="Order" resultMap="allOrder">
+        select * from bookshop.order where orderid=#{orderId}
+    </select>
+
+    <!--修改订单信息-->
+    <update id="updateOrder" parameterType="Order">
+        update bookshop.order set booknum=#{booknum},money=#{money} where orderid=#{orderId}
+    </update>
+
+    <!--修改用户余额-->
+    <update id="updateUserMoney" parameterType="User">
+        update user set money=money-#{money} where id=#{id}
+    </update>
+
+    <!--修改图书库存信息-->
+
+
+    <!--修改订单2  取消订单4-->
+    <select id="currentUserMoney" parameterType="User" resultMap="allOrder">
+        select money from user where id=#{id}
+    </select>
+
+    <!--修改订单3-->
+    <!--<update id="updateOrder" parameterType="Order">
+        update bookshop.order set booknum=#{booknum},money=#{money} where orderid=#{orderId}
+    </update>-->
+
+    <!--修改订单4  取消订单2-->
+    <!--<update id="updateUserMoney" parameterType="User">
+        update users set money=#{money} where id=#{id}
+    </update>-->
+
+    <!--删除订单  取消订单3-->
+    <delete id="deleteOrder" parameterType="Order">
+        delete from bookshop.order where orderid=#{orderId}
+    </delete>
+
+    <!--按订单号查询订单-->
+    <select id="selectOrder" parameterType="Order" resultMap="allOrder">
+        select * from bookshop.order
+            where orderid=#{orderId}
+    </select>
+
+    <!--按用户查询订单-->
+    <select id="listOrderByUser" parameterType="Order" resultMap="allOrder">
+        select * from bookshop.order where userid=#{id}
+    </select>
+
+    <!--查询所有订单-->
+    <select id="listOrder" resultMap="allOrder">
+        select * from bookshop.order
+    </select>
+
+    <!--按个人查询所有订单总数-->
+    <select id="sumOrder" parameterType="Order" resultType="Integer">
+        select count(*) from bookshop.order where userid=#{id}
+    </select>
+
+    <resultMap id="allOrder" type="Order">
+        <id property="orderId" column="orderid"/>
+        <result property="bookId" column="bookid"/>
+        <result property="booknum" column="booknum"/>
+        <result property="money" column="money"/>
+        <result property="userId" column="userid"/>
+        <result property="ctdate" column="ctdate"/>
+    </resultMap>
+</mapper>

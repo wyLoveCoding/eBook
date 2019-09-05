@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nuc.mapper.BookMapper">
+
+
+    <select id="selectBook" parameterType="Book" resultMap="selectBook">
+        select * from book where bookid=#{bookid}
+    </select>
+
+    <select id="listBook" resultMap="selectBook">
+        select * from book
+    </select>
+
+    <update id="updateBook" parameterType="Book">
+        update book  set
+                         bookname='#{bookName}',
+                         bookauthor='#{bookAuthor}',
+                         bookinfo='#{bookInfo}',
+                         bookmoney='#{bookMoney}',
+                         booknum='#{bookNum}',
+                         bookstyle='#{bookStyle}',
+                         bookimg='#{bookimg}',
+                         bookcategory='#{bookCategory}'
+        where bookid='#{bookid}'
+    </update>
+
+    <delete id="deleteBook" parameterType="Book">
+        delete from book where bookid=#{bookid}
+    </delete>
+
+    <insert id="addBook" parameterType="Book">
+        insert into book (bookid,bookname,bookauthor,bookinfo,bookmoney,booknum)
+        values(#{bookid},#{bookName},#{bookAuthor},#{bookInfo},#{bookMoney},#{bookNum})
+    </insert>
+
+    <!--按类别查询图书-->
+    <select id="listBookKey" parameterType="Book" resultMap="selectBook">
+        select * from book
+        <where>
+            <if test="bookStyle == 'name''">bookname=#{bookName}</if>
+            <if test="bookStyle == 'id''">bookid=#{bookid}</if>
+            <if test="bookStyle == 'style''">bookstyle=#{bookStyle}</if>
+        </where>
+    </select>
+
+    <!--按类别查询图书总数-->
+    <select id="sumBookKey" resultType="Integer">
+        select count(*) from book
+        <where>
+            <if test="bookStyle == 'name''">bookname=#{bookName}</if>
+            <if test="bookStyle == 'id''">bookid=#{bookid}</if>
+            <if test="bookStyle == 'style''">bookstyle=#{bookStyle}</if>
+        </where>
+    </select>
+
+    <!--查询图书总数-->
+    <select id="sumBook" resultType="Integer">
+        select count(*) from book
+    </select>
+
+    <select id="selByBookName" parameterType="java.lang.String" resultMap="selectBook">
+        select * from book where bookname like concat('%', #{bookname}, '%')
+    </select>
+
+    <resultMap id="selectBook" type="Book">
+        <id property="bookid" column="bookid"/>
+        <result property="bookName" column="bookname"/>
+        <result property="bookAuthor" column="bookauthor"/>
+        <result property="bookInfo" column="bookinfo"/>
+        <result property="bookNum" column="booknum"/>
+        <result property="bookStyle" column="bookstyle"/>
+        <result property="bookMoney" column="bookmoney"/>
+        <result property="bookimg" column="bookimg"/>
+        <result property="bookCategory" column="bookcategory"/>
+    </resultMap>
+
+</mapper>
